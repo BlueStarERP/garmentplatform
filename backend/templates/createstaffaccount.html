@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    
+    <!-- Bordered table -->
+    <div class="">
+      <div class="card shadow">
+        <div class="card-body">
+          <h5 class="card-title">Create User Account</h5>
+          
+          <form action="{% url 'account:reguseraccount' %}" method="post">{% csrf_token %}
+          <div class="form-group">
+            {% load crispy_forms_tags %}
+            {{ form|crispy }}
+            
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Create Account</button>
+
+          </form>
+          
+        </div>
+      </div>
+    </div> <!-- Bordered table -->
+  </div>
+
+</div>
+
+
+<div class="row justify-content-center">
+  <!-- simple table -->
+  <div class="col-md-12">
+    <div class="card shadow">
+      <div class="card-body">
+        <h5 class="card-title">User List</h5>
+        <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Sir</th>
+              <th>Username</th>
+              
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in per %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td><a href="{% url 'account:user_update_view' i.id %}">{{i.usr}}</a> </td>
+              
+              <td>
+                <!-- <span class="badge badge-pill badge-warning">Hold</span> -->
+                 <a href="#" class="btn btn-sm btn-info"  data-toggle="modal" data-target=".modal-right-{{i.id}}">role</a>
+                 <!-- Slide Modal -->
+    <div class="modal fade modal-right-{{i.id}} modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="defaultModalLabel">{{i.usr}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="#" method="post">{% csrf_token %}
+          <div class="modal-body"> 
+            
+              <input type="checkbox" {% if i.manager %}checked{% endif %} id="vehicle1" name="vehicle1" value="Bike">
+              <label for="vehicle1"> {{i.hr}}</label><br>
+              <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+              <label for="vehicle2"> I have a car</label><br>
+              <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+              <label for="vehicle3"> I have a boat</label><br><br>
+              
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn mb-2 btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn mb-2 btn-primary">Save changes</button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+              </td>
+            </tr>
+            {% endfor %}
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div> <!-- simple table -->
+</div>
+
+{% endblock content %}
